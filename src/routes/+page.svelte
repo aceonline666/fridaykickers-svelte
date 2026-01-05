@@ -80,11 +80,6 @@
 
 <div class="page-content">
 	<div class="container">
-		<div class="header">
-			<h1>Biere</h1>
-			<p class="text-muted">Übersicht und Tracking</p>
-		</div>
-
 		<div class="controls">
 			<div class="search-box">
 				<input
@@ -322,7 +317,7 @@
 	.players-list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-sm);
+		gap: var(--spacing-xs);
 		margin-bottom: var(--spacing-md);
 	}
 

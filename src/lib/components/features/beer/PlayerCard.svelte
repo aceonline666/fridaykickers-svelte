@@ -24,7 +24,7 @@
 	}
 
 	async function handleAddPayment() {
-		if (isProcessing || !paymentAmount || paymentAmount <= 0) return;
+		if (isProcessing || !paymentAmount || paymentAmount === 0) return;
 		isProcessing = true;
 		await beersStore.addPayment(player.id, paymentAmount);
 		isProcessing = false;
@@ -58,7 +58,7 @@
 	{#if selected}
 		<div class="player-actions">
 			{#if player.active}
-				<div class="action-group">
+				<div class="action-row">
 					<button class="btn btn-primary" on:click={handleDrinkBeer} disabled={isProcessing}>
 						<span class="btn-icon">🍺</span>
 						<span>Bier</span>
@@ -71,13 +71,12 @@
 						<span class="btn-icon">↩️</span>
 						<span>Undo</span>
 					</button>
-					<a href="/users/{player.id}" class="btn btn-info">
-						<span class="btn-icon">⚙️</span>
-						<span>Edit</span>
+					<a href="/users/{player.id}" class="btn btn-icon-only btn-info" aria-label="Spieler bearbeiten">
+						⚙️
 					</a>
 				</div>
 
-				<div class="payment-group">
+				<div class="action-row">
 					<input
 						type="number"
 						bind:value={paymentAmount}
@@ -109,7 +108,7 @@
 		background: var(--color-surface);
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius);
-		padding: var(--spacing-md);
+		padding: var(--spacing-sm);
 		cursor: pointer;
 		transition: var(--transition);
 	}
@@ -124,11 +123,21 @@
 		box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
 	}
 
+	.player-card.inactive {
+		opacity: 0.6;
+		background: var(--color-bg);
+	}
+
+	.player-card.inactive:hover {
+		opacity: 0.7;
+		border-color: var(--color-text-light);
+	}
+
 	.player-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		gap: var(--spacing-md);
+		gap: var(--spacing-sm);
 	}
 
 	.player-info {
@@ -137,9 +146,9 @@
 	}
 
 	.player-name {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: 600;
-		margin-bottom: var(--spacing-xs);
+		margin-bottom: 2px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -147,7 +156,7 @@
 
 	.player-stats {
 		display: flex;
-		gap: var(--spacing-md);
+		gap: var(--spacing-sm);
 	}
 
 	.stat {
@@ -157,17 +166,17 @@
 	}
 
 	.stat-value {
-		font-size: var(--font-size-xl);
+		font-size: var(--font-size-lg);
 		font-weight: 600;
 		line-height: 1;
 		color: var(--color-text);
 	}
 
 	.stat-label {
-		font-size: var(--font-size-xs);
+		font-size: 0.65rem;
 		color: var(--color-text-light);
 		text-transform: uppercase;
-		letter-spacing: 0.5px;
+		letter-spacing: 0.3px;
 	}
 
 	.stat.today .stat-value {
@@ -175,9 +184,9 @@
 	}
 
 	.balance {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		font-weight: 600;
-		padding: var(--spacing-xs) var(--spacing-sm);
+		padding: 4px var(--spacing-xs);
 		border-radius: calc(var(--border-radius) / 2);
 		white-space: nowrap;
 	}
@@ -193,36 +202,42 @@
 	}
 
 	.player-actions {
-		margin-top: var(--spacing-md);
-		padding-top: var(--spacing-md);
+		margin-top: var(--spacing-sm);
+		padding-top: var(--spacing-sm);
 		border-top: 1px solid var(--color-border);
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-sm);
+		gap: var(--spacing-xs);
 	}
 
-	.action-group,
-	.payment-group {
+	.action-row {
 		display: flex;
-		gap: var(--spacing-sm);
+		gap: var(--spacing-xs);
 	}
 
 	.btn {
 		flex: 1;
-		min-height: 44px;
+		min-height: 36px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: var(--spacing-xs);
-		padding: var(--spacing-sm) var(--spacing-md);
+		gap: 4px;
+		padding: 6px var(--spacing-sm);
 		border-radius: var(--border-radius);
 		font-weight: 500;
-		font-size: var(--font-size-sm);
+		font-size: 0.8rem;
 		transition: var(--transition);
 	}
 
 	.btn-icon {
 		font-size: 1.2em;
+	}
+
+	.btn-icon-only {
+		flex: 0 0 auto;
+		min-width: 36px;
+		padding: 6px;
+		font-size: 1.1rem;
 	}
 
 	.btn:disabled {
@@ -279,8 +294,8 @@
 
 	.payment-input {
 		flex: 1;
-		min-height: 44px;
-		padding: var(--spacing-sm) var(--spacing-md);
+		min-height: 36px;
+		padding: 6px var(--spacing-sm);
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius);
 		font-size: 16px; /* Prevents zoom on iOS */
@@ -292,17 +307,15 @@
 		border-color: var(--color-primary);
 	}
 
-	@media (min-width: 768px) {
-		.player-actions {
-			flex-direction: row;
-		}
-
-		.action-group {
-			flex: 1;
-		}
-
-		.payment-group {
-			flex: 1;
-		}
+	.inactive-actions {
+		text-align: center;
+		padding: var(--spacing-md) 0;
 	}
+
+	.inactive-message {
+		color: var(--color-text-light);
+		margin-bottom: var(--spacing-md);
+		font-size: var(--font-size-sm);
+	}
+
 </style>

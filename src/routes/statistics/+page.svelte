@@ -101,7 +101,7 @@
 			</div>
 		{:else}
 			<div class="stats-list">
-				{#each stats as player (player.id)}
+				{#each stats as player, index (`${player.id}-${player.rank}-${index}`)}
 					<div
 						class="stats-card {selectedPlayerId === player.id ? 'expanded' : ''}"
 						on:click={() => handlePlayerClick(player.id)}

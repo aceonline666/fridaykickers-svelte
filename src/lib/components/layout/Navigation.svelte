@@ -123,10 +123,11 @@
 		font-family: 'Orbitron', 'Rajdhani', 'Exo 2', 'Audiowide', 'Press Start 2P', -apple-system, sans-serif;
 		font-size: 1.25rem;
 		font-weight: 700;
+		font-style: italic;
 		color: #3b82f6;
 		letter-spacing: 0.5px;
 		text-transform: uppercase;
-		background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+		background: linear-gradient(135deg, #3b82f6 0%, #06d458 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -164,6 +165,7 @@
 	.nav-link {
 		padding: var(--spacing-md) var(--spacing-lg);
 		color: var(--color-text);
+		font-size: var(--font-size-base);
 		font-weight: 500;
 		transition: var(--transition);
 		border-left: 3px solid transparent;

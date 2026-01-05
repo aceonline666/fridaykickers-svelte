@@ -38,24 +38,18 @@ function createStatsStore() {
 		subscribe,
 
 		async loadStats() {
-			update(state => ({ ...state, isLoading: true }));
+			let currentFilters: StatsState['filter'] = initialState.filter;
+
+			update(state => {
+				currentFilters = state.filter;
+				return { ...state, isLoading: true };
+			});
 
 			try {
-				let currentActiveFilter: boolean = initialState.filter.active;
-				let currentSearchFilter: string = initialState.filter.search;
-				let currentYearFilter: number | 'all' = initialState.filter.year;
-
-				update(state => {
-					currentActiveFilter = state.filter.active;
-					currentSearchFilter = state.filter.search;
-					currentYearFilter = state.filter.year;
-					return state;
-				});
-
 				const stats = await statsService.getStats({
-					active: currentActiveFilter,
-					filter: currentSearchFilter,
-					year: currentYearFilter,
+					active: currentFilters.active,
+					filter: currentFilters.search,
+					year: currentFilters.year,
 				});
 
 				update(state => ({
