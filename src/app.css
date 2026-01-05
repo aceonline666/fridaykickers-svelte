@@ -1,0 +1,130 @@
+/* Mobile-first minimalistic design */
+:root {
+	/* Colors - Minimalistic palette */
+	--color-primary: #10b981;
+	--color-primary-dark: #059669;
+	--color-secondary: #f59e0b;
+	--color-danger: #ef4444;
+	--color-text: #1f2937;
+	--color-text-light: #6b7280;
+	--color-border: #e5e7eb;
+	--color-bg: #f9fafb;
+	--color-bg-dark: #111827;
+	--color-surface: #ffffff;
+
+	/* Typography */
+	--font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+	--font-size-xs: 0.75rem;
+	--font-size-sm: 0.875rem;
+	--font-size-base: 1rem;
+	--font-size-lg: 1.125rem;
+	--font-size-xl: 1.25rem;
+	--font-size-2xl: 1.5rem;
+
+	/* Spacing */
+	--spacing-xs: 0.25rem;
+	--spacing-sm: 0.5rem;
+	--spacing-md: 1rem;
+	--spacing-lg: 1.5rem;
+	--spacing-xl: 2rem;
+
+	/* Layout */
+	--nav-height: 60px;
+	--border-radius: 0.5rem;
+	--max-width: 768px;
+	--transition: all 0.2s ease;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 16px;
+}
+
+body {
+	font-family: var(--font-family);
+	line-height: 1.6;
+	color: var(--color-text);
+	background-color: var(--color-bg);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+h1 { font-size: var(--font-size-2xl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+
+/* Links */
+a {
+	text-decoration: none;
+	color: var(--color-primary);
+	transition: var(--transition);
+}
+
+a:hover {
+	color: var(--color-primary-dark);
+}
+
+/* Buttons */
+button {
+	font-family: var(--font-family);
+	cursor: pointer;
+	border: none;
+	background: none;
+	transition: var(--transition);
+}
+
+/* Layout utilities */
+.container {
+	width: 100%;
+	max-width: var(--max-width);
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
+}
+
+.page-content {
+	padding-top: calc(var(--nav-height) + var(--spacing-md));
+	padding-bottom: var(--spacing-xl);
+	min-height: 100vh;
+}
+
+/* Text utilities */
+.text-center { text-align: center; }
+.text-sm { font-size: var(--font-size-sm); }
+.text-xs { font-size: var(--font-size-xs); }
+.text-muted { color: var(--color-text-light); }
+
+/* Spacing utilities */
+.mt-1 { margin-top: var(--spacing-sm); }
+.mt-2 { margin-top: var(--spacing-md); }
+.mt-3 { margin-top: var(--spacing-lg); }
+.mt-4 { margin-top: var(--spacing-xl); }
+
+.mb-1 { margin-bottom: var(--spacing-sm); }
+.mb-2 { margin-bottom: var(--spacing-md); }
+.mb-3 { margin-bottom: var(--spacing-lg); }
+.mb-4 { margin-bottom: var(--spacing-xl); }
+
+.p-1 { padding: var(--spacing-sm); }
+.p-2 { padding: var(--spacing-md); }
+.p-3 { padding: var(--spacing-lg); }
+.p-4 { padding: var(--spacing-xl); }
+
+/* Desktop adjustments */
+@media (min-width: 768px) {
+	:root {
+		--nav-height: 64px;
+		--font-size-2xl: 2rem;
+		--font-size-xl: 1.5rem;
+	}
+}
