@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import { authStore } from '$lib/stores/authStore';
 	import Toast from '$lib/components/shared/Toast.svelte';
 	import Navigation from '$lib/components/layout/Navigation.svelte';
@@ -21,9 +22,10 @@
 		const isLoginPage = currentRoute === '/login';
 
 		if (!$authStore.isAuthenticated && !isLoginPage) {
-			goto('/login', { replaceState: true });
+			// Use window.location for initial redirect to ensure base path is included
+			window.location.href = base + '/login';
 		} else if ($authStore.isAuthenticated && isLoginPage) {
-			goto('/', { replaceState: true });
+			window.location.href = base + '/';
 		}
 	}
 
