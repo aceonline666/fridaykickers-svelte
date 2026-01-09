@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { userService } from '$lib/services/userService';
 	import { toastStore } from '$lib/stores/toastStore';
@@ -65,7 +66,7 @@
 <div class="page-content">
 	<div class="container">
 		<div class="header">
-			<button class="back-button" on:click={() => window.location.href = base + '/'} type="button">
+			<button class="back-button" on:click={() => goto(base + '/')} type="button">
 				← Zurück
 			</button>
 			<h1>Spieler Details</h1>
@@ -80,7 +81,7 @@
 			<div class="empty-state">
 				<h3>Spieler nicht gefunden</h3>
 				<p class="text-muted">Dieser Spieler existiert nicht.</p>
-				<button class="btn-primary" on:click={() => window.location.href = base + '/'}>Zurück zur Übersicht</button>
+				<button class="btn-primary" on:click={() => goto(base + '/')}>Zurück zur Übersicht</button>
 			</div>
 		{:else}
 			<div class="user-card">

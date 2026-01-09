@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { authStore } from '$lib/stores/authStore';
 	import { authService } from '$lib/services/authService';
@@ -19,7 +20,7 @@
 
 		try {
 			await authService.login(email, password);
-			window.location.href = base + '/';
+			goto(base + '/');
 		} catch (err: any) {
 			error = err.message || 'Anmeldung fehlgeschlagen';
 		} finally {

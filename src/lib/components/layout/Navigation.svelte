@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import { authService } from '$lib/services/authService';
 
 	let mobileMenuOpen = false;
@@ -23,7 +24,7 @@
 
 <nav class="nav">
 	<div class="nav-container">
-		<a href="/" class="nav-brand" on:click={closeMenu}>
+		<a href="{base}/" class="nav-brand" on:click={closeMenu}>
 			<span class="brand-text">Fridaykickers</span>
 		</a>
 
@@ -44,35 +45,35 @@
 
 		<div class="nav-links {mobileMenuOpen ? 'active' : ''}">
 			<a
-				href="/"
+				href="{base}/"
 				class="nav-link {currentRoute === '/' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				🍺 Biere
 			</a>
 			<a
-				href="/matches"
+				href="{base}/matches"
 				class="nav-link {currentRoute === '/matches' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				⚽ Spiele
 			</a>
 			<a
-				href="/tournament"
+				href="{base}/tournament"
 				class="nav-link {currentRoute === '/tournament' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				🏆 Turnier
 			</a>
 			<a
-				href="/statistics"
+				href="{base}/statistics"
 				class="nav-link {currentRoute === '/statistics' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				📊 Statistiken
 			</a>
 			<a
-				href="/settings"
+				href="{base}/settings"
 				class="nav-link {currentRoute === '/settings' ? 'active' : ''}"
 				on:click={closeMenu}
 			>

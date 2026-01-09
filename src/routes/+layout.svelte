@@ -22,10 +22,10 @@
 		const isLoginPage = currentRoute === '/login';
 
 		if (!$authStore.isAuthenticated && !isLoginPage) {
-			// Use window.location for initial redirect to ensure base path is included
-			window.location.href = base + '/login';
+			// Use goto with base path for client-side navigation
+			goto(base + '/login', { replaceState: true });
 		} else if ($authStore.isAuthenticated && isLoginPage) {
-			window.location.href = base + '/';
+			goto(base + '/', { replaceState: true });
 		}
 	}
 

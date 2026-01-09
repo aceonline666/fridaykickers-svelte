@@ -19,7 +19,8 @@ const config = {
 		paths: {
 			// Set this to your repository name for GitHub Pages
 			// e.g., base: '/fridaykickers-svelte'
-			base: process.env.NODE_ENV === 'production' ? '/fridaykickers-svelte' : ''
+			base: process.env.NODE_ENV === 'production' ? '/fridaykickers-svelte' : '',
+			relative: false
 		},
 		prerender: {
 			handleHttpError: ({ path, message }) => {

@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { authService } from '$lib/services/authService';
 
 	onMount(async () => {
 		await authService.logout();
-		window.location.href = base + '/login';
+		goto(base + '/login');
 	});
 </script>
 
