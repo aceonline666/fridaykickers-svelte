@@ -99,7 +99,7 @@
 	}
 
 	h1 {
-		font-size: 2rem;
+		font-size: var(--font-size-2xl);
 		margin-bottom: 0.5rem;
 		text-align: center;
 		color: var(--color-dark);
@@ -136,7 +136,7 @@
 		padding: 0.75rem;
 		border: 1px solid #d1d5db;
 		border-radius: var(--border-radius);
-		font-size: 1rem;
+		font-size: var(--font-size-base);
 		transition: border-color 0.2s;
 	}
 
@@ -158,7 +158,7 @@
 		color: white;
 		border: none;
 		border-radius: var(--border-radius);
-		font-size: 1rem;
+		font-size: var(--font-size-base);
 		font-weight: 500;
 		cursor: pointer;
 		transition: background-color 0.2s;

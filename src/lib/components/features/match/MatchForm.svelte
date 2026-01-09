@@ -44,12 +44,12 @@
 	{#if !showForm}
 		<button class="btn-add" on:click={toggleForm}>
 			<span class="icon">+</span>
-			<span>Spiel hinzufügen</span>
+			<span>Spiel eintragen</span>
 		</button>
 	{:else}
 		<div class="form-card">
 			<div class="form-header">
-				<h3>Neues Spiel</h3>
+				<h3>Spiel-Ergebnis</h3>
 				<button class="btn-close" on:click={toggleForm} disabled={isSaving}>×</button>
 			</div>
 
@@ -96,28 +96,6 @@
 		margin-bottom: var(--spacing-lg);
 	}
 
-	.btn-add {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: var(--spacing-sm);
-		padding: var(--spacing-md);
-		background: var(--color-primary);
-		color: white;
-		border: 2px dashed transparent;
-		border-radius: var(--border-radius);
-		font-weight: 500;
-		transition: var(--transition);
-	}
-
-	.btn-add .icon {
-		font-size: 1.5em;
-	}
-
-	.btn-add:hover {
-		background: var(--color-primary-dark);
-	}
 
 	.form-card {
 		background: var(--color-surface);
@@ -143,7 +121,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 1.5rem;
+		font-size: var(--font-size-2xl);
 		color: var(--color-text-light);
 		border-radius: var(--border-radius);
 	}
@@ -159,42 +137,6 @@
 		justify-content: center;
 		gap: var(--spacing-sm);
 		margin-bottom: var(--spacing-md);
-	}
-
-	.goals-input {
-		width: 120px;
-		padding: var(--spacing-md);
-		border: 1px solid var(--color-border);
-		border-radius: var(--border-radius);
-		font-size: var(--font-size-lg);
-		font-family: var(--font-family);
-		background: var(--color-surface);
-		transition: var(--transition);
-		text-align: center;
-		font-weight: 600;
-	}
-
-	.goals-input:focus {
-		outline: none;
-		border-color: var(--color-primary);
-		box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-	}
-
-	.goals-input:disabled {
-		background: var(--color-bg);
-		cursor: not-allowed;
-		opacity: 0.6;
-	}
-
-	.goals-input::placeholder {
-		color: var(--color-text-light);
-		font-weight: 500;
-	}
-
-	.separator {
-		font-size: var(--font-size-2xl);
-		font-weight: 300;
-		color: var(--color-text-light);
 	}
 
 	.form-actions {
@@ -233,17 +175,5 @@
 	.btn-secondary:hover:not(:disabled) {
 		background: var(--color-text-light);
 		color: white;
-	}
-
-	@media (max-width: 640px) {
-		.goals-input {
-			width: 100px;
-			font-size: var(--font-size-base);
-			padding: var(--spacing-sm);
-		}
-
-		.separator {
-			font-size: var(--font-size-xl);
-		}
 	}
 </style>

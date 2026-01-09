@@ -135,9 +135,9 @@
 				{/each}
 			</div>
 
-			<button class="btn-add-user" on:click={openAddUserDialog}>
-				<span class="btn-icon">+</span>
-				<span>Neuen Spieler hinzufügen</span>
+			<button class="btn-add btn-add-user" on:click={openAddUserDialog}>
+				<span class="icon">+</span>
+				<span>Neuer Spieler</span>
 			</button>
 		{/if}
 	</div>
@@ -331,30 +331,7 @@
 	}
 
 	.btn-add-user {
-		width: 100%;
-		min-height: 48px;
-		padding: var(--spacing-md);
-		background: var(--color-primary);
-		color: white;
-		border-radius: var(--border-radius);
-		font-weight: 600;
-		font-size: var(--font-size-base);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: var(--spacing-xs);
-		transition: var(--transition);
 		margin-top: var(--spacing-md);
-	}
-
-	.btn-add-user:hover {
-		background: var(--color-primary-dark);
-		box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-	}
-
-	.btn-add-user .btn-icon {
-		font-size: 1.5rem;
-		font-weight: 700;
 	}
 
 	.modal-overlay {

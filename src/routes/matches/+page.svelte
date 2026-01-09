@@ -176,7 +176,7 @@
 	}
 
 	.team-goals {
-		font-size: var(--font-size-2xl);
+		font-size: var(--font-size-xl);
 		font-weight: 600;
 		color: var(--color-text);
 		min-width: 40px;

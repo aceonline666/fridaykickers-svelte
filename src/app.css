@@ -84,6 +84,82 @@ button {
 	transition: var(--transition);
 }
 
+/* Button styles - Global design system */
+.btn-add {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-sm);
+	padding: var(--spacing-sm) var(--spacing-md);
+	background: var(--color-primary);
+	color: white;
+	border: 2px dashed transparent;
+	border-radius: calc(var(--border-radius) / 2);
+	font-size: var(--font-size-sm);
+	font-weight: 500;
+	transition: var(--transition);
+	min-height: 36px;
+}
+
+.btn-add:hover {
+	background: var(--color-primary-dark);
+	box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-add .icon {
+	font-size: var(--font-size-xl);
+	font-weight: 700;
+}
+
+/* Goal input styles */
+.goals-input {
+	width: 120px;
+	padding: var(--spacing-sm);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius);
+	font-size: var(--font-size-base);
+	font-family: var(--font-family);
+	background: var(--color-surface);
+	transition: var(--transition);
+	text-align: center;
+	font-weight: 600;
+}
+
+.goals-input:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.goals-input:disabled {
+	background: var(--color-bg);
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+.goals-input::placeholder {
+	color: var(--color-text-light);
+	font-weight: 500;
+}
+
+.separator {
+	font-size: var(--font-size-xl);
+	font-weight: 300;
+	color: var(--color-text-light);
+}
+
+@media (max-width: 640px) {
+	.goals-input {
+		width: 100px;
+		font-size: var(--font-size-sm);
+	}
+
+	.separator {
+		font-size: var(--font-size-base);
+	}
+}
+
 /* Layout utilities */
 .container {
 	width: 100%;

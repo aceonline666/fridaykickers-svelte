@@ -74,7 +74,7 @@
 	}
 
 	.toast-icon {
-		font-size: 1.25rem;
+		font-size: var(--font-size-xl);
 		font-weight: bold;
 		flex-shrink: 0;
 	}
@@ -104,12 +104,12 @@
 	.toast-close {
 		background: none;
 		border: none;
-		font-size: 1.5rem;
+		font-size: var(--font-size-2xl);
 		color: #6b7280;
 		cursor: pointer;
 		padding: 0;
-		width: 1.5rem;
-		height: 1.5rem;
+		width: var(--font-size-2xl);
+		height: var(--font-size-2xl);
 		display: flex;
 		align-items: center;
 		justify-content: center;

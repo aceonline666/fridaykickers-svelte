@@ -2,16 +2,11 @@
 	import { onMount } from 'svelte';
 	import { statsStore } from '$lib/stores/statsStore';
 
-	let selectedPlayerId: string | null = null;
 	let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	onMount(async () => {
 		await statsStore.loadStats();
 	});
-
-	function handlePlayerClick(playerId: string) {
-		selectedPlayerId = selectedPlayerId === playerId ? null : playerId;
-	}
 
 	function handleSearchInput(event: Event) {
 		const target = event.target as HTMLInputElement;
@@ -102,10 +97,7 @@
 		{:else}
 			<div class="stats-list">
 				{#each stats as player, index (`${player.id}-${player.rank}-${index}`)}
-					<div
-						class="stats-card {selectedPlayerId === player.id ? 'expanded' : ''}"
-						on:click={() => handlePlayerClick(player.id)}
-					>
+					<div class="stats-card">
 						<div class="stats-header">
 							<div class="rank-name">
 								<span class="rank">{player.rank}.</span>
@@ -114,31 +106,30 @@
 									<span class="inactive-badge">Inaktiv</span>
 								{/if}
 							</div>
-							<div class="stats-badges">
-								<span class="badge beer" title="Biere gesamt">
-									🍺 {player.beersTotal}
-								</span>
-								<span class="badge training" title="Max. Biere pro Training">
-									🚴 {player.maxBeersPerTraining}
-								</span>
-								<span class="badge match" title="Trainings gesamt">
-									⚽ {player.trainingsTotal}
-								</span>
-							</div>
 						</div>
 
-						{#if selectedPlayerId === player.id}
-							<div class="stats-details">
-								<div class="detail-item">
-									<span class="detail-label">Eingezahlt:</span>
-									<span class="detail-value">€{player.paymentsTotal.toFixed(2)}</span>
-								</div>
-								<div class="detail-item">
-									<span class="detail-label">Bier im Schnitt:</span>
-									<span class="detail-value">{player.avgBeersPerTraining.toFixed(2)}</span>
-								</div>
+						<div class="stats-grid">
+							<div class="stat-item stat-yellow">
+								<span class="stat-label">Biere gesamt</span>
+								<span class="stat-value">{player.beersTotal}</span>
 							</div>
-						{/if}
+							<div class="stat-item stat-mountain">
+								<span class="stat-label">Trainings</span>
+								<span class="stat-value">{player.trainingsTotal}</span>
+							</div>
+							<div class="stat-item stat-blue">
+								<span class="stat-label">Ø Biere</span>
+								<span class="stat-value">{player.avgBeersPerTraining.toFixed(2)}</span>
+							</div>
+							<div class="stat-item stat-green">
+								<span class="stat-label">Max Biere</span>
+								<span class="stat-value">{player.maxBeersPerTraining}</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Eingezahlt</span>
+								<span class="stat-value">€{player.paymentsTotal.toFixed(2)}</span>
+							</div>
+						</div>
 					</div>
 				{/each}
 			</div>
@@ -268,125 +259,135 @@
 	.stats-list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-sm);
+		gap: var(--spacing-xs);
 	}
 
 	.stats-card {
 		background: var(--color-surface);
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius);
-		padding: var(--spacing-md);
-		cursor: pointer;
-		transition: var(--transition);
-	}
-
-	.stats-card:hover {
-		border-color: var(--color-primary);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-	}
-
-	.stats-card.expanded {
-		border-color: var(--color-primary);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		padding: var(--spacing-sm);
 	}
 
 	.stats-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: var(--spacing-md);
+		margin-bottom: var(--spacing-xs);
 	}
 
 	.rank-name {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-sm);
-		flex: 1;
-		min-width: 0;
+		gap: var(--spacing-xs);
 	}
 
 	.rank {
 		font-weight: 600;
 		color: var(--color-text-light);
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		flex-shrink: 0;
 	}
 
 	.name {
 		font-weight: 500;
 		color: var(--color-text);
-		font-size: var(--font-size-base);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		font-size: var(--font-size-sm);
 	}
 
 	.inactive-badge {
 		font-size: var(--font-size-xs);
-		padding: 2px 6px;
+		padding: 1px 4px;
 		background: var(--color-text-light);
 		color: white;
-		border-radius: 4px;
+		border-radius: 3px;
 		flex-shrink: 0;
 	}
 
-	.stats-badges {
-		display: flex;
+	.stats-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
 		gap: var(--spacing-xs);
-		flex-wrap: wrap;
-		justify-content: flex-end;
 	}
 
-	.badge {
-		padding: 4px 8px;
-		border-radius: 4px;
-		font-size: var(--font-size-xs);
-		font-weight: 600;
-		white-space: nowrap;
+	.stat-item {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: var(--spacing-xs);
+		background: var(--color-bg);
+		border-radius: calc(var(--border-radius) / 2);
+		position: relative;
 	}
 
-	.badge.beer {
-		background: #fef3c7;
+	/* Tour de France inspired highlights */
+	.stat-yellow {
+		background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+		border: 1px solid #fbbf24;
+	}
+
+	.stat-yellow .stat-label {
 		color: #92400e;
 	}
 
-	.badge.training {
-		background: #d1fae5;
-		color: #065f46;
+	.stat-yellow .stat-value {
+		color: #92400e;
 	}
 
-	.badge.match {
-		background: #fee2e2;
+	.stat-mountain {
+		background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+		border: 1px solid #dc2626;
+	}
+
+	.stat-mountain .stat-label {
 		color: #991b1b;
 	}
 
-	.stats-details {
-		margin-top: var(--spacing-md);
-		padding-top: var(--spacing-md);
-		border-top: 1px solid var(--color-border);
-		display: flex;
-		gap: var(--spacing-md);
-		flex-wrap: wrap;
+	.stat-mountain .stat-value {
+		color: #991b1b;
 	}
 
-	.detail-item {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-xs);
-		padding: var(--spacing-xs) var(--spacing-sm);
-		background: var(--color-bg);
-		border-radius: 4px;
+	.stat-blue {
+		background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+		border: 1px solid #3b82f6;
 	}
 
-	.detail-label {
-		font-size: var(--font-size-sm);
+	.stat-blue .stat-label {
+		color: #1e40af;
+	}
+
+	.stat-blue .stat-value {
+		color: #1e40af;
+	}
+
+	.stat-green {
+		background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+		border: 1px solid #10b981;
+	}
+
+	.stat-green .stat-label {
+		color: #065f46;
+	}
+
+	.stat-green .stat-value {
+		color: #065f46;
+	}
+
+	.stat-label {
+		font-size: var(--font-size-xs);
 		color: var(--color-text-light);
+		font-weight: 500;
+		line-height: 1;
 	}
 
-	.detail-value {
-		font-size: var(--font-size-sm);
+	.stat-value {
+		font-size: var(--font-size-base);
 		font-weight: 600;
 		color: var(--color-text);
+		line-height: 1.2;
+	}
+
+	@media (min-width: 640px) {
+		.stats-grid {
+			grid-template-columns: repeat(5, 1fr);
+		}
 	}
 
 	@media (min-width: 768px) {
@@ -407,20 +408,20 @@
 			width: 150px;
 		}
 
-		.stats-badges {
-			flex-wrap: nowrap;
+		.stats-card {
+			padding: var(--spacing-md);
 		}
-	}
 
-	@media (max-width: 640px) {
 		.stats-header {
-			flex-direction: column;
-			align-items: flex-start;
+			margin-bottom: var(--spacing-sm);
 		}
 
-		.stats-badges {
-			width: 100%;
-			justify-content: flex-start;
+		.stat-item {
+			padding: var(--spacing-sm);
+		}
+
+		.stat-value {
+			font-size: var(--font-size-lg);
 		}
 	}
 </style>

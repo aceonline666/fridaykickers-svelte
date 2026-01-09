@@ -173,7 +173,7 @@
 	}
 
 	.stat-label {
-		font-size: 0.65rem;
+		font-size: var(--font-size-xs);
 		color: var(--color-text-light);
 		text-transform: uppercase;
 		letter-spacing: 0.3px;
@@ -225,19 +225,19 @@
 		padding: 6px var(--spacing-sm);
 		border-radius: var(--border-radius);
 		font-weight: 500;
-		font-size: 0.8rem;
+		font-size: var(--font-size-sm);
 		transition: var(--transition);
 	}
 
 	.btn-icon {
-		font-size: 1.2em;
+		font-size: var(--font-size-lg);
 	}
 
 	.btn-icon-only {
 		flex: 0 0 auto;
 		min-width: 36px;
 		padding: 6px;
-		font-size: 1.1rem;
+		font-size: var(--font-size-lg);
 	}
 
 	.btn:disabled {

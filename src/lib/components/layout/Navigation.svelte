@@ -121,7 +121,7 @@
 
 	.brand-text {
 		font-family: 'Orbitron', 'Rajdhani', 'Exo 2', 'Audiowide', 'Press Start 2P', -apple-system, sans-serif;
-		font-size: 1.25rem;
+		font-size: var(--font-size-xl);
 		font-weight: 700;
 		font-style: italic;
 		color: #3b82f6;
@@ -203,7 +203,7 @@
 	/* Desktop */
 	@media (min-width: 768px) {
 		.brand-text {
-			font-size: 1.5rem;
+			font-size: var(--font-size-2xl);
 		}
 
 		.menu-toggle {

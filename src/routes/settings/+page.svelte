@@ -298,7 +298,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 1.5rem;
+		font-size: var(--font-size-2xl);
 		color: var(--color-text-light);
 		border-radius: var(--border-radius);
 	}
