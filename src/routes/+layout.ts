@@ -1,5 +1,5 @@
-// Enable prerendering for all routes
-export const prerender = true;
+// Disable prerendering - we want a true SPA for GitHub Pages
+export const prerender = false;
 
-// Make this a SPA (Single Page Application) for client-side navigation
+// Disable SSR - make this a pure client-side SPA
 export const ssr = false;

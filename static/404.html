@@ -4,14 +4,17 @@
 	<meta charset="utf-8">
 	<title>Friday Kickers</title>
 	<script>
-		// GitHub Pages SPA redirect
-		// This script takes the current url and converts the path into a query string
-		// parameter, then redirects to the 404.html file with the query string parameter
-		// which is then parsed by the index.html file to restore the correct route
-		sessionStorage.redirect = location.href;
+		// GitHub Pages SPA redirect for client-side routing
+		// Save the current URL path
+		var path = window.location.pathname.replace('/fridaykickers-svelte', '');
+		if (path && path !== '/') {
+			sessionStorage.setItem('redirect', path + window.location.search + window.location.hash);
+		}
+		// Redirect to the base URL
+		window.location.replace('/fridaykickers-svelte/');
 	</script>
-	<meta http-equiv="refresh" content="0;URL='/fridaykickers-svelte/'">
 </head>
 <body>
+	Redirecting...
 </body>
 </html>
