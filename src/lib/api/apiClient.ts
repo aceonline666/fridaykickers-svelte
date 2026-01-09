@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosError } from 'axios';
 import { storage } from '$lib/storage/localStorage';
-import { goto } from '$app/navigation';
+import { base } from '$app/paths';
 
 // API base URL - use environment variable in production
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://fridaykickers-zhg62jfgha-ey.a.run.app';
@@ -44,7 +44,7 @@ class ApiClient {
 					// Unauthorized - clear token and redirect to login
 					storage.removeToken();
 					if (typeof window !== 'undefined') {
-						goto('/login');
+						window.location.href = base + '/login';
 					}
 				}
 
