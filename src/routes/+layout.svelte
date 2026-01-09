@@ -8,6 +8,8 @@
 	import Navigation from '$lib/components/layout/Navigation.svelte';
 	import { browser } from '$app/environment';
 
+	export const prerender = true;
+
 	// Check authentication on mount
 	onMount(() => {
 		authStore.initialize();
