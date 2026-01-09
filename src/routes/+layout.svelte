@@ -17,8 +17,9 @@
 
 	// Reactive statement to handle route protection
 	$: if (browser) {
-		const currentPath = $page.url.pathname;
-		const isLoginPage = currentPath === '/login';
+		// Get the route path (without base path)
+		const currentRoute = $page.route.id || '/';
+		const isLoginPage = currentRoute === '/login';
 
 		if (!$authStore.isAuthenticated && !isLoginPage) {
 			goto('/login', { replaceState: true });

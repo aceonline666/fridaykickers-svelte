@@ -17,7 +17,8 @@
 		closeMenu();
 	}
 
-	$: currentPath = $page.url.pathname;
+	// Use route.id instead of pathname to handle base paths correctly
+	$: currentRoute = $page.route.id || '/';
 </script>
 
 <nav class="nav">
@@ -44,35 +45,35 @@
 		<div class="nav-links {mobileMenuOpen ? 'active' : ''}">
 			<a
 				href="/"
-				class="nav-link {currentPath === '/' ? 'active' : ''}"
+				class="nav-link {currentRoute === '/' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				🍺 Biere
 			</a>
 			<a
 				href="/matches"
-				class="nav-link {currentPath === '/matches' ? 'active' : ''}"
+				class="nav-link {currentRoute === '/matches' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				⚽ Spiele
 			</a>
 			<a
 				href="/tournament"
-				class="nav-link {currentPath === '/tournament' ? 'active' : ''}"
+				class="nav-link {currentRoute === '/tournament' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				🏆 Turnier
 			</a>
 			<a
 				href="/statistics"
-				class="nav-link {currentPath === '/statistics' ? 'active' : ''}"
+				class="nav-link {currentRoute === '/statistics' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				📊 Statistiken
 			</a>
 			<a
 				href="/settings"
-				class="nav-link {currentPath === '/settings' ? 'active' : ''}"
+				class="nav-link {currentRoute === '/settings' ? 'active' : ''}"
 				on:click={closeMenu}
 			>
 				⚙️ Einstellungen

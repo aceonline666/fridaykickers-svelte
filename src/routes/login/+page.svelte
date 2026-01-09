@@ -19,7 +19,7 @@
 
 		try {
 			await authService.login(email, password);
-			goto('/dashboard');
+			goto('/');
 		} catch (err: any) {
 			error = err.message || 'Anmeldung fehlgeschlagen';
 		} finally {
