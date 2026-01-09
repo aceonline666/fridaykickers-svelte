@@ -5,6 +5,7 @@ interface AuthState {
 	isAuthenticated: boolean;
 	token: string | null;
 	isLoading: boolean;
+	initialized: boolean;
 }
 
 function createAuthStore() {
@@ -12,6 +13,7 @@ function createAuthStore() {
 		isAuthenticated: false,
 		token: null,
 		isLoading: false,
+		initialized: false,
 	};
 
 	const { subscribe, set, update } = writable<AuthState>(initialState);
@@ -27,6 +29,12 @@ function createAuthStore() {
 					...state,
 					isAuthenticated: true,
 					token,
+					initialized: true,
+				}));
+			} else {
+				update(state => ({
+					...state,
+					initialized: true,
 				}));
 			}
 		},
@@ -38,6 +46,7 @@ function createAuthStore() {
 				...state,
 				isAuthenticated: true,
 				token,
+				initialized: true,
 			}));
 		},
 
@@ -48,6 +57,7 @@ function createAuthStore() {
 				isAuthenticated: false,
 				token: null,
 				isLoading: false,
+				initialized: true,
 			});
 		},
 

@@ -16,7 +16,8 @@
 	});
 
 	// Reactive statement to handle route protection
-	$: if (browser) {
+	// Only run after auth store has been initialized to prevent premature redirects
+	$: if (browser && $authStore.initialized) {
 		// Get the route path (without base path)
 		const currentRoute = $page.route.id || '/';
 		const isLoginPage = currentRoute === '/login';
