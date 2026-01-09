@@ -12,7 +12,7 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: 'index.html',
+			fallback: '404.html',
 			precompress: false,
 			strict: false
 		}),
@@ -20,6 +20,15 @@ const config = {
 			// Set this to your repository name for GitHub Pages
 			// e.g., base: '/fridaykickers-svelte'
 			base: process.env.NODE_ENV === 'production' ? '/fridaykickers-svelte' : ''
+		},
+		prerender: {
+			handleHttpError: ({ path, message }) => {
+				// Ignore errors for dynamic routes
+				if (path.startsWith('/users/')) {
+					return;
+				}
+				throw new Error(message);
+			}
 		}
 	}
 };

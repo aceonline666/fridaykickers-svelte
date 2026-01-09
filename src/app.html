@@ -9,19 +9,6 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@700&display=swap" rel="stylesheet" />
 		<title>Friday Kickers</title>
-
-		<!-- GitHub Pages SPA redirect handling -->
-		<script>
-			(function() {
-				var redirect = sessionStorage.getItem('redirect');
-				sessionStorage.removeItem('redirect');
-				if (redirect) {
-					// Restore the path that was saved by 404.html
-					history.replaceState(null, null, '/fridaykickers-svelte' + redirect);
-				}
-			})();
-		</script>
-
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

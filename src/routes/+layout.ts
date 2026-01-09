@@ -1,5 +1,5 @@
-// Disable prerendering - we want a true SPA for GitHub Pages
-export const prerender = false;
+// Enable prerendering for static pages
+export const prerender = true;
 
-// Disable SSR - make this a pure client-side SPA
+// Disable SSR for client-side functionality
 export const ssr = false;
