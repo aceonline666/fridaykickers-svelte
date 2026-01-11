@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { userService } from '$lib/services/userService';
@@ -13,7 +13,7 @@
 	let showConfirmDialog = false;
 	let confirmAction: 'activate' | 'deactivate' | null = null;
 
-	$: userId = $page.params.id;
+	$: userId = page.params.id;
 
 	onMount(async () => {
 		await loadUser();
@@ -140,7 +140,7 @@
 {#if showConfirmDialog && user}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div class="modal-overlay" on:click={closeConfirmDialog} role="dialog" aria-modal="true">
+	<div class="modal-overlay" on:click={closeConfirmDialog} role="dialog" aria-modal="true" tabindex="-1">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div class="modal-content" on:click={(e) => e.stopPropagation()}>
