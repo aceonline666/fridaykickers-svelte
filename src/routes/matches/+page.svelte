@@ -3,7 +3,6 @@
 	import { matchesStore } from '$lib/stores/matchesStore';
 	import MatchForm from '$lib/components/features/match/MatchForm.svelte';
 	import StandingsTable from '$lib/components/features/match/StandingsTable.svelte';
-	import { formatDate } from '$lib/utils/formatters';
 
 	onMount(async () => {
 		await matchesStore.loadStandings();
@@ -57,7 +56,7 @@
 					{#each matches as match, index (match.id || `match-${index}`)}
 						<div class="match-card">
 							<div class="match-date">
-								{formatDate(match.createdAt)}
+								{match.createdAt}
 							</div>
 							<div class="match-teams">
 								<div class="team home">
