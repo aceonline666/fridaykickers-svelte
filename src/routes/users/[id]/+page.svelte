@@ -66,7 +66,7 @@
 <div class="page-content">
 	<div class="container">
 		<div class="header">
-			<button class="back-button" on:click={() => goto(resolve(('/'))} type="button">
+			<button class="back-button" on:click={() => goto(resolve('/'))} type="button">
 				← Zurück
 			</button>
 			<h1>Spieler Details</h1>
