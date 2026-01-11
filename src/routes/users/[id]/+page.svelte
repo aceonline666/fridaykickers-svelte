@@ -20,6 +20,11 @@
 	});
 
 	async function loadUser() {
+		if (!userId) {
+			isLoading = false;
+			return;
+		}
+
 		isLoading = true;
 		try {
 			user = await userService.getUser(userId);
@@ -42,7 +47,7 @@
 	}
 
 	async function handleToggleActive() {
-		if (!user || !confirmAction) return;
+		if (!user || !confirmAction || !userId) return;
 
 		const newStatus = confirmAction === 'activate';
 		isSaving = true;

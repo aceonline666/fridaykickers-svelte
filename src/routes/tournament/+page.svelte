@@ -3,7 +3,6 @@
 	import { tournamentStore } from '$lib/stores/tournamentStore';
 	import TournamentForm from '$lib/components/features/tournament/TournamentForm.svelte';
 	import StandingsTable from '$lib/components/features/match/StandingsTable.svelte';
-	import { formatDate } from '$lib/utils/formatters';
 
 	onMount(async () => {
 		await tournamentStore.loadStandings();
@@ -38,10 +37,10 @@
 				</div>
 			{:else}
 				<div class="matches-list">
-					{#each matches as match, index (match.id || `match-${index}`)}
+					{#each matches as match, index (`match-${index}`)}
 						<div class="match-card">
 							<div class="match-date">
-								{formatDate(match.createdAt)}
+								{match.date}
 							</div>
 							<div class="match-teams">
 								<div class="team home">

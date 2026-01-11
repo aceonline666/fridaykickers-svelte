@@ -53,10 +53,10 @@
 				</div>
 			{:else}
 				<div class="matches-list">
-					{#each matches as match, index (match.id || `match-${index}`)}
+					{#each matches as match, index (`match-${index}`)}
 						<div class="match-card">
 							<div class="match-date">
-								{match.createdAt}
+								{match.date}
 							</div>
 							<div class="match-teams">
 								<div class="team home">

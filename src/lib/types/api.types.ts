@@ -43,14 +43,11 @@ export interface Payment {
 }
 
 export interface Match {
-	id: string;
 	homeTeam: string;
 	awayTeam: string;
 	homeGoals: number;
 	awayGoals: number;
-	tournament: boolean;
-	year: number;
-	createdAt: string;
+	date: string;
 }
 
 export interface Team {
