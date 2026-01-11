@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosError } from 'axios';
 import { storage } from '$lib/storage/localStorage';
-import { base } from '$app/paths';
+import { resolve } from '$app/paths';
+import { goto } from '$app/navigation';
 
 // API base URL - use environment variable in production
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://fridaykickers-zhg62jfgha-ey.a.run.app';
@@ -43,9 +44,7 @@ class ApiClient {
 				if (error.response?.status === 401) {
 					// Unauthorized - clear token and redirect to login
 					storage.removeToken();
-					if (typeof window !== 'undefined') {
-						window.location.href = base + '/login';
-					}
+					goto(resolve('/login'));
 				}
 
 				return Promise.reject(this.normalizeError(error));

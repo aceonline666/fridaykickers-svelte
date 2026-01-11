@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
-	import { authStore } from '$lib/stores/authStore';
+	import { resolve } from '$app/paths';
 	import { authService } from '$lib/services/authService';
 
 	let email = '';
@@ -20,7 +19,7 @@
 
 		try {
 			await authService.login(email, password);
-			goto(base + '/');
+			goto(resolve('/'));
 		} catch (err: any) {
 			error = err.message || 'Anmeldung fehlgeschlagen';
 		} finally {

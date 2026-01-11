@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { authStore } from '$lib/stores/authStore';
 	import Toast from '$lib/components/shared/Toast.svelte';
 	import Navigation from '$lib/components/layout/Navigation.svelte';
@@ -23,9 +23,9 @@
 
 		if (!$authStore.isAuthenticated && !isLoginPage) {
 			// Use goto with base path for client-side navigation
-			goto(base + '/login', { replaceState: true });
+			goto(resolve('/login'), { replaceState: true });
 		} else if ($authStore.isAuthenticated && isLoginPage) {
-			goto(base + '/', { replaceState: true });
+			goto(resolve('/'), { replaceState: true });
 		}
 	}
 

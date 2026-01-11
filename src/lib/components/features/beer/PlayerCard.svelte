@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { User } from '$lib/types/api.types';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { beersStore } from '$lib/stores/beersStore';
 	import { formatCurrency } from '$lib/utils/formatters';
 
@@ -72,7 +72,7 @@
 						<span class="btn-icon">↩️</span>
 						<span>Undo</span>
 					</button>
-					<a href="{base}/users/{player.id}" class="btn btn-icon-only btn-info" aria-label="Spieler bearbeiten">
+					<a href="{resolve('/users/[id]', player)}" class="btn btn-icon-only btn-info" aria-label="Spieler bearbeiten">
 						⚙️
 					</a>
 				</div>
@@ -94,7 +94,7 @@
 			{:else}
 				<div class="inactive-actions">
 					<p class="inactive-message">Dieser Spieler ist deaktiviert</p>
-					<a href="{base}/users/{player.id}" class="btn btn-primary">
+					<a href="{resolve('/users/[id]', player)}" class="btn btn-primary">
 						<span class="btn-icon">✓</span>
 						<span>Aktivieren</span>
 					</a>
