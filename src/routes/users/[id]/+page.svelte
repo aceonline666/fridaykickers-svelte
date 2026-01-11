@@ -13,7 +13,20 @@
 	let showConfirmDialog = false;
 	let confirmAction: 'activate' | 'deactivate' | null = null;
 
+	// Edit mode state
+	let isEditingInfo = false;
+	let editName = '';
+	let editEmail = '';
+
+	// Password change state
+	let isChangingPassword = false;
+	let newPassword = '';
+	let confirmPassword = '';
+
 	$: userId = page.params.id;
+	$: passwordsMatch = newPassword === confirmPassword;
+	$: passwordValid = newPassword.length >= 6;
+	$: canSavePassword = passwordValid && passwordsMatch && newPassword.length > 0;
 
 	onMount(async () => {
 		await loadUser();
@@ -33,6 +46,72 @@
 			toastStore.error(error.message || 'Fehler beim Laden des Benutzers');
 		} finally {
 			isLoading = false;
+		}
+	}
+
+	function startEditingInfo() {
+		if (!user) return;
+		editName = user.name;
+		editEmail = user.email;
+		isEditingInfo = true;
+	}
+
+	function cancelEditingInfo() {
+		isEditingInfo = false;
+		editName = '';
+		editEmail = '';
+	}
+
+	async function saveUserInfo() {
+		if (!user || !userId) return;
+
+		if (!editName.trim() || !editEmail.trim()) {
+			toastStore.error('Name und E-Mail dürfen nicht leer sein');
+			return;
+		}
+
+		isSaving = true;
+		try {
+			await userService.updateUserInfo(userId, {
+				name: editName.trim(),
+				email: editEmail.trim()
+			});
+
+			// Update local user object
+			user = { ...user, name: editName.trim(), email: editEmail.trim() };
+			isEditingInfo = false;
+			toastStore.success('Benutzerdaten erfolgreich aktualisiert!');
+		} catch (error: any) {
+			console.error('Failed to update user info:', error);
+			toastStore.error(error.message || 'Fehler beim Aktualisieren der Benutzerdaten');
+		} finally {
+			isSaving = false;
+		}
+	}
+
+	function togglePasswordSection() {
+		isChangingPassword = !isChangingPassword;
+		if (!isChangingPassword) {
+			newPassword = '';
+			confirmPassword = '';
+		}
+	}
+
+	async function savePassword() {
+		if (!userId || !canSavePassword) return;
+
+		isSaving = true;
+		try {
+			await userService.changePassword(userId, { password: newPassword });
+			toastStore.success('Passwort erfolgreich geändert!');
+			isChangingPassword = false;
+			newPassword = '';
+			confirmPassword = '';
+		} catch (error: any) {
+			console.error('Failed to change password:', error);
+			toastStore.error(error.message || 'Fehler beim Ändern des Passworts');
+		} finally {
+			isSaving = false;
 		}
 	}
 
@@ -89,48 +168,153 @@
 				<button class="btn-primary" on:click={() => goto(resolve('/'))}>Zurück zur Übersicht</button>
 			</div>
 		{:else}
-			<div class="user-card">
-				<div class="user-info">
-					<div class="info-row">
-						<span class="label">Name:</span>
-						<span class="value">{user.name}</span>
-					</div>
-					<div class="info-row">
-						<span class="label">E-Mail:</span>
-						<span class="value">{user.email}</span>
-					</div>
-					<div class="info-row">
-						<span class="label">Status:</span>
-						<span class="value">
-							{#if user.active}
-								<span class="badge badge-success">Aktiv</span>
-							{:else}
-								<span class="badge badge-inactive">Inaktiv</span>
-							{/if}
-						</span>
-					</div>
-				</div>
-
-				<div class="actions">
-					{#if user.active}
-						<button
-							class="btn-danger"
-							on:click={() => openConfirmDialog('deactivate')}
-							disabled={isSaving}
-							type="button"
-						>
-							Deaktivieren
-						</button>
-					{:else}
-						<button
-							class="btn-primary"
-							on:click={() => openConfirmDialog('activate')}
-							disabled={isSaving}
-							type="button"
-						>
-							Aktivieren
+			<!-- User Information Section -->
+			<div class="section-card">
+				<div class="section-header">
+					<h2>👤 Benutzerdaten</h2>
+					{#if !isEditingInfo}
+						<button class="btn-secondary" on:click={startEditingInfo} type="button">
+							Bearbeiten
 						</button>
 					{/if}
+				</div>
+
+				<div class="section-content">
+					{#if isEditingInfo}
+						<div class="form-group">
+							<label for="editName">Name:</label>
+							<input
+								id="editName"
+								type="text"
+								bind:value={editName}
+								class="form-input"
+								disabled={isSaving}
+								placeholder="Name"
+							/>
+						</div>
+						<div class="form-group">
+							<label for="editEmail">E-Mail:</label>
+							<input
+								id="editEmail"
+								type="email"
+								bind:value={editEmail}
+								class="form-input"
+								disabled={isSaving}
+								placeholder="E-Mail"
+							/>
+						</div>
+						<div class="form-actions">
+							<button class="btn-secondary" on:click={cancelEditingInfo} disabled={isSaving} type="button">
+								Abbrechen
+							</button>
+							<button class="btn-primary" on:click={saveUserInfo} disabled={isSaving} type="button">
+								{isSaving ? 'Speichern...' : 'Speichern'}
+							</button>
+						</div>
+					{:else}
+						<div class="info-row">
+							<span class="label">Name:</span>
+							<span class="value">{user.name}</span>
+						</div>
+						<div class="info-row">
+							<span class="label">E-Mail:</span>
+							<span class="value">{user.email}</span>
+						</div>
+						<div class="info-row">
+							<span class="label">Status:</span>
+							<span class="value">
+								{#if user.active}
+									<span class="badge badge-success">Aktiv</span>
+								{:else}
+									<span class="badge badge-inactive">Inaktiv</span>
+								{/if}
+							</span>
+						</div>
+					{/if}
+				</div>
+			</div>
+
+			<!-- Password Change Section -->
+			<div class="section-card">
+				<div class="section-header">
+					<h2>🔒 Passwort ändern</h2>
+					<button class="btn-secondary" on:click={togglePasswordSection} type="button">
+						{isChangingPassword ? 'Abbrechen' : 'Ändern'}
+					</button>
+				</div>
+
+				{#if isChangingPassword}
+					<div class="section-content">
+						<div class="form-group">
+							<label for="newPassword">Neues Passwort:</label>
+							<input
+								id="newPassword"
+								type="password"
+								bind:value={newPassword}
+								class="form-input"
+								disabled={isSaving}
+								placeholder="Mindestens 6 Zeichen"
+								minlength="6"
+							/>
+							{#if newPassword.length > 0 && !passwordValid}
+								<p class="field-error">Passwort muss mindestens 6 Zeichen lang sein</p>
+							{/if}
+						</div>
+						<div class="form-group">
+							<label for="confirmPassword">Passwort bestätigen:</label>
+							<input
+								id="confirmPassword"
+								type="password"
+								bind:value={confirmPassword}
+								class="form-input"
+								disabled={isSaving}
+								placeholder="Passwort wiederholen"
+							/>
+							{#if confirmPassword.length > 0 && !passwordsMatch}
+								<p class="field-error">Passwörter stimmen nicht überein</p>
+							{/if}
+						</div>
+						<div class="form-actions">
+							<button
+								class="btn-primary"
+								on:click={savePassword}
+								disabled={!canSavePassword || isSaving}
+								type="button"
+							>
+								{isSaving ? 'Ändern...' : 'Passwort ändern'}
+							</button>
+						</div>
+					</div>
+				{/if}
+			</div>
+
+			<!-- User Actions Section -->
+			<div class="section-card">
+				<div class="section-header">
+					<h2>⚙️ Aktionen</h2>
+				</div>
+				<div class="section-content">
+					<div class="actions">
+						{#if user.active}
+							<button
+								class="btn-danger"
+								on:click={() => openConfirmDialog('deactivate')}
+								disabled={isSaving}
+								type="button"
+							>
+								Spieler deaktivieren
+							</button>
+						{:else}
+							<button
+								class="btn-primary"
+								on:click={() => openConfirmDialog('activate')}
+								disabled={isSaving}
+								type="button"
+							>
+								Spieler aktivieren
+							</button>
+						{/if}
+					</div>
 				</div>
 			</div>
 		{/if}
@@ -235,16 +419,81 @@
 		margin-bottom: var(--spacing-lg);
 	}
 
-	.user-card {
+	.section-card {
 		background: var(--color-surface);
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius);
 		padding: var(--spacing-lg);
 		max-width: 600px;
+		margin-bottom: var(--spacing-lg);
 	}
 
-	.user-info {
-		margin-bottom: var(--spacing-lg);
+	.section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: var(--spacing-md);
+		padding-bottom: var(--spacing-md);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.section-header h2 {
+		margin: 0;
+		font-size: var(--font-size-lg);
+		font-weight: 600;
+	}
+
+	.section-content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xs);
+	}
+
+	.form-group label {
+		font-weight: 500;
+		color: var(--color-text);
+	}
+
+	.form-input {
+		width: 100%;
+		min-height: 44px;
+		padding: var(--spacing-sm) var(--spacing-md);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius);
+		font-size: var(--font-size-base);
+		font-family: var(--font-family);
+		transition: var(--transition);
+	}
+
+	.form-input:focus {
+		outline: none;
+		border-color: var(--color-primary);
+		box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+	}
+
+	.form-input:disabled {
+		background-color: var(--color-bg);
+		cursor: not-allowed;
+		opacity: 0.6;
+	}
+
+	.form-actions {
+		display: flex;
+		gap: var(--spacing-sm);
+		justify-content: flex-end;
+		margin-top: var(--spacing-sm);
+	}
+
+	.field-error {
+		color: var(--color-danger);
+		font-size: var(--font-size-sm);
+		margin: 0;
 	}
 
 	.info-row {

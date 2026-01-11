@@ -1,6 +1,6 @@
 import { apiClient } from '$lib/api/apiClient';
 import { ENDPOINTS } from '$lib/api/endpoints';
-import type { User, UserQueryParams, CreateUserRequest, SetActiveRequest } from '$lib/types/api.types';
+import type { User, UserQueryParams, CreateUserRequest, UpdateUserRequest, ChangePasswordRequest } from '$lib/types/api.types';
 
 class UserService {
 	async getUsers(params?: UserQueryParams): Promise<User[]> {
@@ -46,6 +46,14 @@ class UserService {
 
 	async setActive(userId: string, active: boolean): Promise<void> {
 		return await apiClient.put<void>(ENDPOINTS.USER_ACTIVE(userId), { active });
+	}
+
+	async updateUserInfo(userId: string, request: UpdateUserRequest): Promise<void> {
+		return await apiClient.put<void>(ENDPOINTS.USER_INFO(userId), request);
+	}
+
+	async changePassword(userId: string, request: ChangePasswordRequest): Promise<void> {
+		return await apiClient.put<void>(ENDPOINTS.USER_PASSWORD(userId), request);
 	}
 }
 
