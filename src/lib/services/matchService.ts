@@ -6,8 +6,9 @@ class MatchService {
 	async getMatches(params?: MatchQueryParams): Promise<Match[]> {
 		const queryParams = new URLSearchParams();
 
+		// Send tournament parameter explicitly - backend needs the value
 		if (params?.tournament !== undefined) {
-			queryParams.append('tournament', params.tournament.toString());
+			queryParams.append('tournament', params.tournament ? 'true' : 'false');
 		}
 		if (params?.limit) {
 			queryParams.append('limit', params.limit.toString());
@@ -30,8 +31,9 @@ class MatchService {
 	async getStandings(params?: TableauxQueryParams): Promise<Team[]> {
 		const queryParams = new URLSearchParams();
 
+		// Send tournament parameter explicitly - backend needs the value
 		if (params?.tournament !== undefined) {
-			queryParams.append('tournament', params.tournament.toString());
+			queryParams.append('tournament', params.tournament ? 'true' : 'false');
 		}
 		if (params?.year !== undefined && params.year !== 'all') {
 			queryParams.append('year', params.year.toString());
