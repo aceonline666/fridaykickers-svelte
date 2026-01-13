@@ -1,7 +1,7 @@
 import { apiClient } from '$lib/api/apiClient';
 import { ENDPOINTS } from '$lib/api/endpoints';
 import { authStore } from '$lib/stores/authStore';
-import type { LoginRequest, LoginResponse } from '$lib/types/api.types';
+import type { LoginResponse } from '$lib/types/api.types';
 
 class AuthService {
 	async login(email: string, password: string): Promise<void> {

@@ -97,10 +97,25 @@
 </div>
 
 {#if showConfirmDialog}
-	<div class="modal-overlay" on:click={cancelUpdate}>
-		<div class="modal-content" on:click={(e) => e.stopPropagation()}>
+	<div
+		class="modal-overlay"
+		on:click={cancelUpdate}
+		on:keydown={(e) => e.key === 'Escape' && cancelUpdate()}
+		role="button"
+		tabindex="-1"
+		aria-label="Close dialog"
+	>
+		<div
+			class="modal-content"
+			on:click={(e) => e.stopPropagation()}
+			on:keydown={(e) => e.stopPropagation()}
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="dialog-title"
+			tabindex="-1"
+		>
 			<div class="modal-header">
-				<h3>Bestätigung erforderlich</h3>
+				<h3 id="dialog-title">Bestätigung erforderlich</h3>
 				<button class="modal-close" on:click={cancelUpdate}>×</button>
 			</div>
 
@@ -114,7 +129,6 @@
 					bind:value={adminPassword}
 					placeholder="Admin-Passwort"
 					class="password-input"
-					autofocus
 					on:keydown={(e) => e.key === 'Enter' && confirmUpdate()}
 				/>
 			</div>

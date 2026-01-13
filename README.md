@@ -26,6 +26,7 @@
 - 🔐 **Authentication**: JWT-based auth with Bearer tokens
 - 📱 **Mobile-First**: Responsive design optimized for mobile devices
 - 🎨 **Clean UI**: Minimalistic green theme with excellent UX
+- 📲 **Progressive Web App**: Install as native app on mobile and desktop
 
 ## 🛠 Tech Stack
 
@@ -370,6 +371,72 @@ npm run preview      # Preview production build
 - **Performance**: System fonts, minimal CSS, CSS custom properties
 - **Accessibility**: Semantic HTML, ARIA labels, keyboard navigation
 
+## 📲 Progressive Web App (PWA)
+
+The Friday Kickers app is configured as a Progressive Web App and can be installed on mobile and desktop devices.
+
+### Features
+
+- **Offline Support**: App files are cached and work without internet
+- **Install to Home Screen**: Appears like a native app
+- **Standalone Mode**: Runs without browser UI
+- **Fast Loading**: Cached resources load instantly
+- **Auto Updates**: Service worker updates automatically on new deployments
+
+### Installation
+
+#### Desktop (Chrome/Edge)
+
+1. Visit the deployed app URL
+2. Look for the install icon in the address bar (⊕)
+3. Click to install the app
+4. App opens in standalone window
+
+#### Mobile (Android/iOS)
+
+**Android (Chrome):**
+1. Visit the deployed app URL
+2. Tap the three-dot menu
+3. Select "Install app" or "Add to Home Screen"
+
+**iOS (Safari):**
+1. Visit the deployed app URL
+2. Tap the Share button
+3. Select "Add to Home Screen"
+
+### Testing PWA Locally
+
+```bash
+# Build the app
+npm run build
+
+# Preview the production build
+npm run preview
+```
+
+Then visit the preview URL in Chrome/Edge and click the install icon.
+
+**Note**: PWAs require HTTPS in production. GitHub Pages provides HTTPS automatically.
+
+### PWA Requirements Met
+
+✅ HTTPS (via GitHub Pages)
+✅ Web App Manifest
+✅ Service Worker
+✅ App Icons (192x192, 512x512)
+✅ Responsive Design
+✅ Offline Functionality
+
+### Verification
+
+Use Chrome DevTools Lighthouse to verify PWA setup:
+
+1. Open the deployed app
+2. Open DevTools (F12)
+3. Go to "Lighthouse" tab
+4. Run "Progressive Web App" audit
+5. Should score 100% or near 100%
+
 ## 🚢 Deployment
 
 ### Build for Production
@@ -378,23 +445,31 @@ npm run preview      # Preview production build
 npm run build
 ```
 
+The build output includes:
+- `build/` - Static files ready for deployment
+- `build/manifest.json` - PWA manifest
+- `build/service-worker.js` - Service worker for offline support
+- `build/icon-192.png` & `build/icon-512.png` - App icons
+
 ### Deployment Options
 
-**1. Vercel (Recommended)**
+**1. GitHub Pages (Current)**
+- Free hosting
+- Automatic HTTPS
+- Configured with base path `/fridaykickers-svelte`
+- PWA-ready
+- GitHub Actions workflow for automatic deployment
+
+**2. Vercel**
 - Zero-config deployment
 - Automatic HTTPS
 - Global CDN
 - Git integration
 
-**2. Netlify**
+**3. Netlify**
 - Drag-and-drop deployment
 - Form handling
 - Continuous deployment
-
-**3. GitHub Pages**
-- Free hosting
-- Requires static adapter
-- Custom domain support
 
 ### Environment Variables
 
@@ -402,6 +477,14 @@ Production:
 ```env
 VITE_API_BASE_URL=https://fridaykickers-zhg62jfgha-ey.a.run.app
 ```
+
+### GitHub Pages Setup
+
+The app is configured for GitHub Pages deployment with:
+- Static adapter in `svelte.config.js`
+- Base path: `/fridaykickers-svelte`
+- Service worker for offline functionality
+- PWA manifest with correct paths
 
 ## 📚 Feature Documentation
 
@@ -551,6 +634,8 @@ The Friday Kickers Svelte frontend is a complete, modern web application featuri
 ✅ Match and tournament management
 ✅ Statistics and rankings
 ✅ Admin settings
+✅ Progressive Web App (installable on mobile & desktop)
+✅ Offline functionality with service worker
 ✅ Mobile-first responsive design
 ✅ Clean, layered architecture
 ✅ Type-safe TypeScript

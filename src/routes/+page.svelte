@@ -210,14 +210,6 @@
 {/if}
 
 <style>
-	.header {
-		margin-bottom: var(--spacing-md);
-	}
-
-	.header h1 {
-		margin-bottom: var(--spacing-xs);
-	}
-
 	.controls {
 		display: flex;
 		flex-direction: column;

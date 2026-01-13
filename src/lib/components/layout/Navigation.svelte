@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { authService } from '$lib/services/authService';
 
@@ -19,7 +19,7 @@
 	}
 
 	// Use route.id instead of pathname to handle base paths correctly
-	$: currentRoute = $page.route.id || '/';
+	$: currentRoute = page.route.id || '/';
 </script>
 
 <nav class="nav">
@@ -87,7 +87,14 @@
 </nav>
 
 {#if mobileMenuOpen}
-	<div class="overlay" on:click={closeMenu}></div>
+	<div
+		class="overlay"
+		on:click={closeMenu}
+		on:keydown={(e) => e.key === 'Escape' && closeMenu()}
+		role="button"
+		tabindex="0"
+		aria-label="Close menu"
+	></div>
 {/if}
 
 <style>
