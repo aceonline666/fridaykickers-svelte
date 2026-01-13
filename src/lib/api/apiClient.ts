@@ -2,9 +2,13 @@ import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosError } f
 import { storage } from '$lib/storage/localStorage';
 import { resolve } from '$app/paths';
 import { goto } from '$app/navigation';
+import { browser } from '$app/environment';
 
 // API base URL - use environment variable in production
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://fridaykickers-zhg62jfgha-ey.a.run.app';
+
+// Flag to prevent multiple simultaneous 401 redirects
+let isRedirectingTo401 = false;
 
 class ApiClient {
 	private client: AxiosInstance;
@@ -41,10 +45,25 @@ class ApiClient {
 		this.client.interceptors.response.use(
 			(response) => response,
 			async (error: AxiosError) => {
-				if (error.response?.status === 401) {
+				if (error.response?.status === 401 && browser && !isRedirectingTo401) {
 					// Unauthorized - clear token and redirect to login
+					// Set flag to prevent multiple redirects from simultaneous requests
+					isRedirectingTo401 = true;
+
+					// Clear token from storage
 					storage.removeToken();
-					goto(resolve('/login'));
+
+					// Import authStore dynamically to avoid circular dependency
+					const { authStore } = await import('$lib/stores/authStore');
+					authStore.logout();
+
+					// Redirect to login page
+					await goto(resolve('/login'), { replaceState: true });
+
+					// Reset flag after a short delay
+					setTimeout(() => {
+						isRedirectingTo401 = false;
+					}, 1000);
 				}
 
 				return Promise.reject(this.normalizeError(error));
