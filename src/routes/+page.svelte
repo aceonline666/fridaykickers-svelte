@@ -21,6 +21,11 @@
 		selectedPlayerId = selectedPlayerId === playerId ? null : playerId;
 	}
 
+	function handleBeerClick(playerId: string) {
+		// Ensure player stays expanded after clicking beer
+		selectedPlayerId = playerId;
+	}
+
 	function handleSearchInput(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const searchQuery = target.value;
@@ -76,6 +81,8 @@
 
 	$: users = $beersStore.users;
 	$: searchQuery = $beersStore.filter.search;
+	$: totalBeersToday = users.reduce((sum, user) => sum + (user.beersToday ?? 0), 0);
+	$: beerEmoji = totalBeersToday > 40 ? '🍻☠️☠️☠️' : totalBeersToday > 30 ? '🍻😵‍💫🥴😵' :totalBeersToday > 20 ? '🍻🍻🍻' : totalBeersToday > 10 ? '🍻' : '🍺';
 </script>
 
 <div class="page-content">
@@ -91,20 +98,13 @@
 				/>
 			</div>
 
-			<div class="filter-buttons">
-				<button
-					class="filter-btn {$beersStore.filter.active ? 'active' : ''}"
-					on:click={toggleActiveFilter}
-				>
-					Aktiv
-				</button>
-				<button
-					class="filter-btn {!$beersStore.filter.active ? 'active' : ''}"
-					on:click={toggleActiveFilter}
-				>
-					Alle
-				</button>
-			</div>
+			<button class="filter-toggle" on:click={toggleActiveFilter} aria-label="Filter umschalten">
+				<span class="toggle-track {$beersStore.filter.active ? 'active' : ''}">
+					<span class="toggle-label left">{$beersStore.filter.active ? 'Aktiv' : ''}</span>
+					<span class="toggle-thumb"></span>
+					<span class="toggle-label right">{!$beersStore.filter.active ? 'Alle' : ''}</span>
+				</span>
+			</button>
 		</div>
 
 		{#if $beersStore.isLoading}
@@ -130,7 +130,7 @@
 						aria-expanded={selectedPlayerId === player.id}
 						aria-label="Details für {player.name} {selectedPlayerId === player.id ? 'ausblenden' : 'anzeigen'}"
 					>
-						<PlayerCard {player} selected={selectedPlayerId === player.id} />
+						<PlayerCard {player} selected={selectedPlayerId === player.id} onBeerClick={() => handleBeerClick(player.id)} />
 					</button>
 				{/each}
 			</div>
@@ -142,6 +142,12 @@
 		{/if}
 	</div>
 </div>
+
+{#if totalBeersToday > 0}
+	<div class="beer-counter">
+		Heute: {totalBeersToday} {beerEmoji}
+	</div>
+{/if}
 
 {#if showAddUserDialog}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -212,13 +218,15 @@
 <style>
 	.controls {
 		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-sm);
+		flex-direction: row;
+		gap: var(--spacing-xs);
 		margin-bottom: var(--spacing-lg);
+		align-items: stretch;
 	}
 
 	.search-box {
-		width: 100%;
+		flex: 1;
+		min-width: 0;
 	}
 
 	.search-input {
@@ -238,33 +246,90 @@
 		box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 	}
 
-	.filter-buttons {
+	.filter-toggle {
+		padding: 0;
+		border: none;
+		background: transparent;
+		flex-shrink: 0;
+		cursor: pointer;
+	}
+
+	.toggle-track {
+		position: relative;
 		display: flex;
-		gap: var(--spacing-xs);
-		background: var(--color-surface);
-		padding: var(--spacing-xs);
-		border-radius: var(--border-radius);
-		border: 1px solid var(--color-border);
+		align-items: center;
+		width: 90px;
+		height: 36px;
+		background: var(--color-border);
+		border-radius: 18px;
+		transition: background-color 0.3s ease;
+		padding: 0 4px;
 	}
 
-	.filter-btn {
-		flex: 1;
-		min-height: 44px;
-		padding: var(--spacing-sm);
-		border-radius: calc(var(--border-radius) / 2);
-		font-size: var(--font-size-sm);
-		font-weight: 500;
-		color: var(--color-text-light);
-		transition: var(--transition);
+	.toggle-track.active {
+		background: var(--color-primary);
 	}
 
-	.filter-btn.active {
+	.toggle-thumb {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		background: white;
+		border-radius: 50%;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		transition: transform 0.3s ease;
+		left: 4px;
+	}
+
+	.toggle-track.active .toggle-thumb {
+		transform: translateX(54px);
+	}
+
+	.toggle-label {
+		position: absolute;
+		font-size: 11px;
+		font-weight: 600;
+		color: white;
+		user-select: none;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.toggle-label.left {
+		left: 8px;
+	}
+
+	.toggle-label.right {
+		right: 8px;
+	}
+
+	.filter-toggle:hover .toggle-thumb {
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	}
+
+	.filter-toggle:active .toggle-thumb {
+		transform: scale(0.95);
+	}
+
+	.filter-toggle:active .toggle-track.active .toggle-thumb {
+		transform: translateX(54px) scale(0.95);
+	}
+
+	.beer-counter {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--spacing-xs) var(--spacing-sm);
 		background: var(--color-primary);
 		color: white;
-	}
-
-	.filter-btn:hover:not(.active) {
-		background: var(--color-bg);
+		font-size: var(--font-size-sm);
+		font-weight: 600;
+		box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+		z-index: 100;
 	}
 
 	.loading {
@@ -457,18 +522,4 @@
 		color: white;
 	}
 
-	@media (min-width: 768px) {
-		.controls {
-			flex-direction: row;
-			align-items: center;
-		}
-
-		.search-box {
-			flex: 1;
-		}
-
-		.filter-buttons {
-			width: 200px;
-		}
-	}
 </style>

@@ -3,9 +3,11 @@
 	import { resolve } from '$app/paths';
 	import { beersStore } from '$lib/stores/beersStore';
 	import { formatCurrency } from '$lib/utils/formatters';
+	import { slide } from 'svelte/transition';
 
 	export let player: User;
 	export let selected: boolean = false;
+	export let onBeerClick: (() => void) | undefined = undefined;
 
 	let paymentAmount = 10;
 	let isProcessing = false;
@@ -15,6 +17,10 @@
 		isProcessing = true;
 		await beersStore.drinkBeer(player.id);
 		isProcessing = false;
+		// Keep the player expanded after drinking a beer
+		if (onBeerClick) {
+			onBeerClick();
+		}
 	}
 
 	async function handleUndoDrink() {
@@ -62,7 +68,7 @@
 	</div>
 
 	{#if selected}
-		<div class="player-actions">
+		<div class="player-actions" transition:slide={{ duration: 200 }}>
 			{#if player.active}
 				<div class="action-row">
 					<button class="btn btn-primary btn-main" on:click={handleDrinkBeer} disabled={isProcessing}>
