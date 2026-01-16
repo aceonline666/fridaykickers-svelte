@@ -82,7 +82,7 @@
 	$: users = $beersStore.users;
 	$: searchQuery = $beersStore.filter.search;
 	$: totalBeersToday = users.reduce((sum, user) => sum + (user.beersToday ?? 0), 0);
-	$: beerEmoji = totalBeersToday > 40 ? '🍻☠️☠️☠️' : totalBeersToday > 30 ? '🍻😵‍💫🥴😵' :totalBeersToday > 20 ? '🍻🍻🍻' : totalBeersToday > 10 ? '🍻' : '🍺';
+	$: beerEmoji = totalBeersToday >= 40 ? '🍻☠️☠️☠️' : totalBeersToday >= 30 ? '🍻😵‍💫🥴😵' :totalBeersToday >= 20 ? '🍻🍻🍻' : totalBeersToday >= 10 ? '🍻' : '🍺';
 </script>
 
 <div class="page-content">
