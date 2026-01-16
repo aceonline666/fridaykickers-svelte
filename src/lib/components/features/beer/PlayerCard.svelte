@@ -37,7 +37,12 @@
 <div class="player-card {selected ? 'selected' : ''} {!player.active ? 'inactive' : ''}">
 	<div class="player-header">
 		<div class="player-info">
-			<h3 class="player-name">{player.name}</h3>
+			<h3 class="player-name">
+				{#if player.rank !== 0}
+					<span class="rank">{player.rank}.</span>
+				{/if}
+				{player.name}
+			</h3>
 			<div class="player-stats">
 				<span class="stat">
 					<span class="stat-value">{player.beersTotal ?? 0}</span>
@@ -60,17 +65,17 @@
 		<div class="player-actions">
 			{#if player.active}
 				<div class="action-row">
-					<button class="btn btn-primary" on:click={handleDrinkBeer} disabled={isProcessing}>
+					<button class="btn btn-primary btn-main" on:click={handleDrinkBeer} disabled={isProcessing}>
 						<span class="btn-icon">🍺</span>
 						<span>Bier</span>
 					</button>
 					<button
-						class="btn btn-secondary"
+						class="btn btn-icon-only btn-secondary"
 						on:click={handleUndoDrink}
 						disabled={isProcessing || player.beersTotal === 0}
+						aria-label="Letztes Bier rückgängig machen"
 					>
-						<span class="btn-icon">↩️</span>
-						<span>Undo</span>
+						↩️
 					</button>
 					<a href="{resolve(`/users/${player.id}`)}" class="btn btn-icon-only btn-info" aria-label="Spieler bearbeiten">
 						⚙️
@@ -82,7 +87,7 @@
 						type="number"
 						bind:value={paymentAmount}
 						step="0.5"
-						class="payment-input"
+						class="payment-input payment-input-main"
 						placeholder="Betrag"
 						on:click={(e) => e.stopPropagation()}
 					/>
@@ -153,6 +158,11 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	.rank {
+		color: var(--color-primary);
+		margin-right: 4px;
 	}
 
 	.player-stats {
@@ -234,9 +244,13 @@
 		font-size: var(--font-size-lg);
 	}
 
+	.btn-main {
+		flex: 1;
+	}
+
 	.btn-icon-only {
 		flex: 0 0 auto;
-		min-width: 36px;
+		min-width: 100px;
 		padding: 6px;
 		font-size: var(--font-size-lg);
 	}
@@ -294,13 +308,16 @@
 	}
 
 	.payment-input {
-		flex: 1;
 		min-height: 36px;
 		padding: 6px var(--spacing-sm);
 		border: 1px solid var(--color-border);
 		border-radius: var(--border-radius);
 		font-size: 16px; /* Prevents zoom on iOS */
 		font-family: var(--font-family);
+	}
+
+	.payment-input-main {
+		flex: 1;
 	}
 
 	.payment-input:focus {
